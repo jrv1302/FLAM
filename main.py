@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from scipy.spatial import cKDTree
 
 def curve_points(theta_deg, M, X, n=4000, t_min=6, t_max=60):
     theta = np.radians(theta_deg)
@@ -12,9 +13,24 @@ def curve_points(theta_deg, M, X, n=4000, t_min=6, t_max=60):
 
     return np.column_stack([x, y])
 
+def make_loss(data, n_samples):
+    def loss(params):
+        theta, M, X = params
+
+        pts = curve_points(theta, M, X, n=n_samples)
+
+        tree = cKDTree(pts)
+
+        d, _ = tree.query(data, p=1)
+
+        return np.mean(d)
+
+    return loss
+
 csv_path = "xy_data.csv"
 
 df = pd.read_csv(csv_path)
 data = df[["x", "y"]].values
-pts = curve_points(30,0.03,55)
-print(pts[:5])
+loss = make_loss(data,2000)
+
+print(loss([30,0.03,55]))
