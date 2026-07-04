@@ -71,3 +71,10 @@ print(f"\nL1 distance over all {len(data)} points:")
 print(f"max L1 error = {d.max():.6f}")
 print(f"mean L1 error = {d.mean():.6f}")
 print(f"total L1 error = {d.sum():.6f}")
+
+latex = (
+    r"\left(t*\cos(%.7f)-e^{%.7f\left|t\right|}\cdot\sin(0.3t)\sin(%.7f)+%.4f,"
+    r"42+t*\sin(%.7f)+e^{%.7f\left|t\right|}\cdot\sin(0.3t)\cos(%.7f)\right)"
+) % (theta_rad, M, theta_rad, X, theta_rad, M, theta_rad)
+print("\nDesmos/LaTeX format:")
+print(latex)
